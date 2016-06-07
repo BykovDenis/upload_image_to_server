@@ -1,7 +1,8 @@
 <?php
 
-print_r($_POST);
-
+echo "Ответ от сервера ";
+var_dump($_POST);
+/*
 foreach($_POST as $key => $value){ 
   
   $arr = explode("||||", $key);
@@ -18,5 +19,6 @@ foreach($_POST as $key => $value){
   file_put_contents($filename,$img);
 
 }
+*/
 
 ?>

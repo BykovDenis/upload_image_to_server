@@ -55,13 +55,15 @@ document.querySelector('#files1').addEventListener('change', function(){
           console.log('Счетчик '+counter);
 
           }
+        
+        dataPreparation();
           
-      },false);
+      },true);
 
       fr.readAsDataURL(file);      
 
-  }       
-  
+  }  
+    
 });
 
 function preview(file){
@@ -110,9 +112,9 @@ function dataPreparation(){
     if(debug){            
       console.log('Вызов');    
       console.log('Ключ '+key);  
-      console.log('Изображение', formData.get(key));
+      //console.log('Изображение', formData.get(key));
     }
-      sendToServer(formData.get(key));
+      sendToServer(key+"||||"+formData.get(key));
   } 
   
 }
@@ -125,21 +127,26 @@ function sendToServer(img){
   
   console.log("Передача на сервер");
   
-  var xhr = new XMLHttpRequest();  
-  
-  xhr.addEventListener('load', function(){
+  var xhr = new XMLHttpRequest(); 
+  var uploadInProgress = true;  
+  xhr.onload = function(e){
+
     
-    div = document.getElementById('img');
+    var div = document.getElementById('image');
     var el = document.createElement('div');
     div.appendChild(el);
     el.innerHTML = xhr.responseText;
     el.className = 'container__preview';   
     
-  });
+  };
+  
+  console.log(xhr.status);
   
   xhr.open('POST','lib/response.php',true);  
   xhr.setRequestHeader('Content-type', 'application/x-www-urlencoded');
-  xhr.send(img);
+  
+  xhr.send(img); 
+
   
 }
 
@@ -192,6 +199,15 @@ document.getElementById("sbmUpload").addEventListener("click", function(){
    }                                                   
                                                       
 },false);
+
+function uploadComplete(event, completionCallback) {
+    this.progressObject.done++;
+    this.progressUpdate(0, 0);
+    completionCallback();
+    if (this.config.onFileComplete) {
+        this.config.onFileComplete(event, this.currentFile);
+    }
+};
 
 
 /*
