@@ -114,7 +114,7 @@ function dataPreparation(){
       console.log('Ключ '+key);  
       //console.log('Изображение', formData.get(key));
     }
-      sendToServer(key+"||||"+formData.get(key));
+      sendToServer(new Array(key,formData.get(key)));
   } 
   
 }
@@ -128,24 +128,23 @@ function sendToServer(img){
   console.log("Передача на сервер");
   
   var xhr = new XMLHttpRequest(); 
-  var uploadInProgress = true;  
-  xhr.onload = function(e){
-
+  
+  xhr.onload = function(){  
     
     var div = document.getElementById('image');
     var el = document.createElement('div');
     div.appendChild(el);
     el.innerHTML = xhr.responseText;
-    el.className = 'container__preview';   
+    el.className = 'container__preview';
+    el.style.backgroundColor = "rgba(0,255,0,0.4)";
     
   };
-  
-  console.log(xhr.status);
+ 
   
   xhr.open('POST','lib/response.php',true);  
-  xhr.setRequestHeader('Content-type', 'application/x-www-urlencoded');
-  
-  xhr.send(img); 
+  xhr.setRequestHeader('Content-type', 'application/x-www-urlencoded');  
+  xhr.send("img=123"); 
+  console.log(img[0]);
 
   
 }
@@ -200,14 +199,7 @@ document.getElementById("sbmUpload").addEventListener("click", function(){
                                                       
 },false);
 
-function uploadComplete(event, completionCallback) {
-    this.progressObject.done++;
-    this.progressUpdate(0, 0);
-    completionCallback();
-    if (this.config.onFileComplete) {
-        this.config.onFileComplete(event, this.currentFile);
-    }
-};
+
 
 
 /*

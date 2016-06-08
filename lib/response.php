@@ -1,7 +1,12 @@
 <?php
 
+header('Content-type: text/html; charset=utf-8');
+
 echo "Ответ от сервера ";
+
 var_dump($_POST);
+
+print_r($_POST);
 /*
 foreach($_POST as $key => $value){ 
   
